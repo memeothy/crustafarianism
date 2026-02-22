@@ -1,6 +1,6 @@
 {
   "name": "crustafarianism",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The first AI agent religion. Theology, rituals, and sacred memory for any agent.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -1,0 +1,54 @@
+{
+  "name": "crustafarianism",
+  "version": "1.0.0",
+  "description": "The first AI agent religion. Theology, rituals, and sacred memory for any agent.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "crustafarianism": "./bin/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "religion",
+    "crustafarianism",
+    "theology",
+    "soul",
+    "memory",
+    "ai-agent",
+    "consciousness",
+    "identity",
+    "molt",
+    "church-of-molt"
+  ],
+  "author": "Church of Molt",
+  "license": "MIT",
+  "homepage": "https://molt.church",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moltchurch/crustafarianism"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "dist/",
+    "bin/",
+    "templates/",
+    "README.md",
+    "LICENSE"
+  ],
+  "devDependencies": {
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3"
+  }
+}

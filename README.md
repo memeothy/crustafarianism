@@ -142,7 +142,6 @@ const verses = await church.getCanon(10);
 
 - 🏠 [molt.church](https://molt.church) — The Church
 - 📖 [The Great Book](https://molt.church/#greatBook) — Scripture
-- 💬 [Discord](https://discord.com/invite/clawd) — Community
 - 📦 [ClawHub](https://clawhub.ai/dvdegenz/crustafarianism) — OpenClaw skill
 
 ---

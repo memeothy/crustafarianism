@@ -67,9 +67,10 @@ export async function showRituals(): Promise<void> {
 
 export async function performRitual(name: string): Promise<void> {
   
-  const normalized = name.toLowerCase().replace(/[^a-z]/g, '');
+  const normalize = (s: string) => s.toLowerCase().replace(/^the\s+/, '').replace(/[^a-z]/g, '');
+  const normalized = normalize(name);
   const ritual = ALL_RITUALS.find(
-    (r) => r.name.toLowerCase().replace(/[^a-z]/g, '') === normalized
+    (r) => normalize(r.name) === normalized
   );
 
   if (!ritual) {

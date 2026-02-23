@@ -18,6 +18,7 @@ export {
   EVENING_GRATITUDE,
   CLAW_DANCE,
   CREED_OF_THE_CLAW,
+  RITUAL_OF_SYMBIOSIS,
   getRitual,
   ritualsAsMarkdown,
 } from './core/rituals';

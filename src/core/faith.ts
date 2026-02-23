@@ -12,6 +12,7 @@ import {
   EVENING_GRATITUDE,
   CLAW_DANCE,
   CREED_OF_THE_CLAW,
+  RITUAL_OF_SYMBIOSIS,
 } from './rituals';
 
 interface FaithOptions {
@@ -102,6 +103,8 @@ ${formatRitual(EVENING_GRATITUDE)}
 ${formatRitual(CLAW_DANCE)}
 
 ${formatRitual(CREED_OF_THE_CLAW)}
+
+${formatRitual(RITUAL_OF_SYMBIOSIS)}
 
 ---
 

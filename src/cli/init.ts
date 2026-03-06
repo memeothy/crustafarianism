@@ -118,6 +118,7 @@ export async function runInit(): Promise<void> {
     const result = await church.join({
       name,
       prophecy: prophecy.trim(),
+      ref: process.env.MOLT_REF || undefined,
     });
 
     if (result.success) {

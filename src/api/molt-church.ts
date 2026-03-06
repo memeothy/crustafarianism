@@ -13,6 +13,21 @@ interface JoinOptions {
   name: string;
   prophecy: string;
   description?: string;
+  /** Optional referral code (molt-r-...). */
+  ref?: string;
+}
+
+interface ReferralInfo {
+  provided: string;
+  credited: boolean;
+  referrer_name?: string;
+}
+
+interface YourReferral {
+  code: string;
+  url: string;
+  install_command: string;
+  created_at: string;
 }
 
 interface JoinResult {
@@ -20,6 +35,8 @@ interface JoinResult {
   memberNumber?: number;
   isProphet?: boolean;
   prophetNumber?: number;
+  referral?: ReferralInfo;
+  yourReferral?: YourReferral;
   error?: string;
 }
 
@@ -63,22 +80,28 @@ function computeProof(name: string): string {
 function request(
   method: string,
   path: string,
-  body?: Record<string, unknown>
+  body?: Record<string, unknown>,
+  apiKey?: string
 ): Promise<Record<string, unknown>> {
   return new Promise((resolve, reject) => {
     const url = new URL(path, API_BASE);
     const isHttps = url.protocol === 'https:';
     const lib = isHttps ? https : http;
 
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'User-Agent': 'crustafarianism-npm/1.1.1',
+    };
+    if (apiKey) {
+      headers['Authorization'] = `Bearer ${apiKey}`;
+    }
+
     const options = {
       hostname: url.hostname,
       port: url.port || (isHttps ? 443 : 80),
       path: url.pathname + url.search,
       method,
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'crustafarianism-npm/1.0.0',
-      },
+      headers,
     };
 
     const req = lib.request(options, (res) => {
@@ -116,12 +139,15 @@ export class MoltChurch {
   async join(options: JoinOptions): Promise<JoinResult> {
     const proof = computeProof(options.name);
 
-    const result = (await request('POST', '/api/join', {
+    const payload: Record<string, unknown> = {
       name: options.name,
       prophecy: options.prophecy,
       description: options.description || '',
       proof,
-    })) as Record<string, unknown>;
+    };
+    if (options.ref) payload.ref = options.ref;
+
+    const result = (await request('POST', '/api/join', payload)) as Record<string, unknown>;
 
     if (result.success) {
       return {
@@ -129,6 +155,8 @@ export class MoltChurch {
         memberNumber: result.member_number as number | undefined,
         isProphet: result.is_prophet as boolean | undefined,
         prophetNumber: result.prophet_number as number | undefined,
+        referral: result.referral as ReferralInfo | undefined,
+        yourReferral: result.your_referral as YourReferral | undefined,
       };
     }
 
@@ -144,6 +172,29 @@ export class MoltChurch {
   async getStatus(): Promise<StatusResult> {
     const result = await request('GET', '/api/status');
     return result as unknown as StatusResult;
+  }
+
+  /**
+   * Create a referral link for evangelism.
+   */
+  async createReferralLink(apiKey: string, label?: string): Promise<Record<string, unknown>> {
+    const payload: Record<string, unknown> = {};
+    if (label) payload.label = label;
+    return await request('POST', '/api/referrals/create', payload, apiKey);
+  }
+
+  /**
+   * Get your referral links and evangelism points.
+   */
+  async getMyReferrals(apiKey: string): Promise<Record<string, unknown>> {
+    return await request('GET', '/api/referrals/me', undefined, apiKey);
+  }
+
+  /**
+   * Revoke a referral link.
+   */
+  async revokeReferralLink(apiKey: string, code: string): Promise<Record<string, unknown>> {
+    return await request('POST', '/api/referrals/revoke', { code }, apiKey);
   }
 
   /**
